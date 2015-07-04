@@ -1,0 +1,10 @@
+{
+  "name": "pebble-carwings",
+  "version": "0.0.1",
+  "description": "Pebble.js app to communicate with Carwings",
+  "dependencies": {
+    "sax": "1.1.1"
+  },
+  "author": "Philip Cali",
+  "license": "MIT"
+}
