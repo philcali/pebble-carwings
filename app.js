@@ -32,16 +32,24 @@ if (!config.username && !config.password) {
           color = 'red';
         }
         for (var i = 0; i < vehicle.battery.capacity; i++) {
-          if (vehicle.battery.remaining > i) {
-            var bar = new UI.Rect({
-              position: new Vector2(9, 144 - (9 * i)),
-              size: new Vector2(9 * (i + 1), 9),
-              borderColor: 'black',
-              backgroundColor: color
-            });
-            battery.add(bar);
-          }
+          var bar = new UI.Rect({
+            position: new Vector2(9, 132 - (9 * i)),
+            size: new Vector2(9 * (i + 1), 9),
+            borderColor: 'black',
+            backgroundColor: vehicle.battery.remaining > i ? color : 'white'
+          });
+          battery.add(bar);
         }
+        // TODO: this needs to be configurable
+        var miles = Math.floor(parseInt(vehicle.battery.range.acOff) * 0.00062137);
+        var range = new UI.Text({
+          text: miles + ' mi',
+          color: 'white',
+          font: 'gothic-18-bold',
+          position: new Vector2(48, 9),
+          size: new Vector2(144, 12)
+        });
+        battery.add(range);
         battery.show();
       }
     , requestComplete = function() {
