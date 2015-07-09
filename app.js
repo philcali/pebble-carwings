@@ -1,22 +1,61 @@
 var Carwings = require('carwings')
   , settings = require('settings')
   , config = settings.option()
-  , UI = require('ui');
+  , Vibe = require('ui/vibe')
+  , Light = require('ui/light')
+  , UI = require('ui')
+  , Vector2 = require('vector2')
+  , splashCard = new UI.Card({
+      title: 'Carwings'
+    });
 
 settings.config({
   url: 'http://philcali.servehttp.com:8080/index.html'
 });
 
 if (!config.username && !config.password) {
-  // Short circuit
-  var carwingsCard = new UI.Card({
-    title: 'Carwings',
-    subtitle: 'Please configure.'
-  });
-
-  carwingsCard.show();
+  splashCard.subtitle('Please configure.');
+  splashCard.show();
 } else {
-  var carwings = new Carwings(config);
+  var carwings = new Carwings(config)
+    , battery = new UI.Window()
+    , displayBattery = function(vehicle) {
+        var ratio = Math.ceil(vehicle.battery.capacity / vehicle.battery.remaining) * 100;
+        var color;
+        if (ratio >= 75) {
+          color = 'green';
+        } else if (ratio >= 50) {
+          color = 'yellow';
+        } else if (ratio >= 25) {
+          color = 'orange';
+        } else {
+          color = 'red';
+        }
+        for (var i = 0; i < vehicle.battery.capacity; i++) {
+          if (vehicle.battery.remaining > i) {
+            var bar = new UI.Rect({
+              position: new Vector2(9, 144 - (9 * i)),
+              size: new Vector2(9 * (i + 1), 9),
+              borderColor: 'black',
+              backgroundColor: color
+            });
+            battery.add(bar);
+          }
+        }
+        battery.show();
+      }
+    , requestComplete = function() {
+        splashCard.hide();
+        Vibe.vibrate('short');
+        Light.trigger();
+      }
+    , errorHandler = function(error) {
+        var errorCard = new UI.Card({
+          title: 'Error',
+          subtitle: error.message
+        });
+        errorCard.show();
+      };
 
   // Store the sessionId for next time
   carwings.on('authenticated', function(e) {
@@ -24,36 +63,38 @@ if (!config.username && !config.password) {
   });
 
   carwings.on('error', function(e) {
-    if (e.error instanceof Error) {
-      console.log(e.code + ': ' + e.message);
-    } else {
-      console.log(JSON.stringify(e.code));
+    console.log(e.code + ': ' + e.message);
+    if (typeof e.request !== 'undefined') {
       console.log(e.request.getAllResponseHeaders());
     }
   });
 
   if (carwings.isAuthenticated()) {
-    var carwingsCard = new UI.Card({
-      title: 'Carwings',
-      subtitle: 'Getting Status...'
-    });
-    carwingsCard.show();
+    splashCard.subtitle('Getting Status...');
+    splashCard.show();
 
-    carwings.on('vehicleStatus', function(e) {
-      config.vehicle.battery = e.data;
-      settings.option('vehicle', config.vehicle);
-    });
-    carwings.vehicleStatus(config.vehicle.vin);
+    carwings
+      .vehicleStatus(config.vehicle.vin)
+      .complete(requestComplete)
+      .error(errorHandler)
+      .success(function(data) {
+        config.vehicle.battery = data.battery;
+        config.vehicle.lastCheck = new Date();
+        settings.option('vehicle', config.vehicle);
+        displayBattery(config.vehicle);
+      });
   } else {
-    var carwingsCard = new UI.Card({
-      title: 'Carwings',
-      subtitle: 'Logging In...'
-    });
-    carwingsCard.show();
+    splashCard.subtitle('Logging In...');
+    splashCard.show();
 
-    carwings.on('login', function(e) {
-      settings.option('vehicle', e.data);
-    });
-    carwings.login(config.username, config.password);
+    carwings
+      .login(config.username, config.password)
+      .complete(requestComplete)
+      .error(errorHandler)
+      .success(function(vehicle) {
+        vehicle.lastCheck = new Date();
+        settings.option('vehicle', vehicle);
+        displayBattery(vehicle);
+      });
   }
 }
