@@ -1,7 +1,7 @@
 var Settings = require('settings')
   , Flow = require('flow')
   , Wakeup = require('wakeup')
-  , flow = new Flow(Settings.option());
+  , flow = new Flow(Settings.option(), Settings.data());
 
 Settings.config(
   'http://pebble-carwings.s3-website-us-east-1.amazonaws.com/',
@@ -13,9 +13,9 @@ Settings.config(
   },
   function(e) {
     // Always clear the session
-    var sessionId = Settings.option('sessionId');
+    var sessionId = Settings.data('sessionId');
     if (sessionId) {
-      Settings.option('sessionId', null);
+      Settings.data('sessionId', null);
     }
   });
 
