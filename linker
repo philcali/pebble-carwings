@@ -1,10 +1,8 @@
 #!/bin/bash
 
-node update
+npm update
 ln -s $PWD/app.js $PWD/pebblejs/src/js/app.js
 ln -s $PWD/appinfo.json $PWD/pebblejs/appinfo.json
 ln -s $PWD/lib/carwings.js $PWD/pebblejs/src/js/lib/carwings.js
-ln -s $PWD/lib/dom2js.js $PWD/pebblejs/src/js/lib/dom2js.js
 ln -s $PWD/lib/display.js $PWD/pebblejs/src/js/lib/display.js
 ln -s $PWD/lib/flow.js $PWD/pebblejs/src/js/lib/flow.js
-ln -s $PWD/node_modules/sax/lib/sax.js $PWD/pebblejs/src/lib/sax.js

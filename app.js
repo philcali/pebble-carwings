@@ -1,10 +1,13 @@
 var Settings = require('settings')
   , Flow = require('flow')
   , Wakeup = require('wakeup')
-  , flow = new Flow(Settings.option(), Settings.data());
+  , flow = new Flow(Settings.option(), Settings.data(), [
+      Pebble.getAccountToken(),
+      Pebble.getWatchToken()
+    ].join('.'));
 
 Settings.config(
-  'http://pebble-carwings.s3-website-us-east-1.amazonaws.com/',
+  'https://proxywings.com/form/index.html',
   function(e) {
     // Init certain options
     if (!e.options || (e.options && !e.options.range)) {
@@ -12,7 +15,7 @@ Settings.config(
     }
   },
   function(e) {
-    // Always clear the session
+    // Always clear the vehicle info
     var sessionId = Settings.data('sessionId');
     if (sessionId) {
       Settings.data('sessionId', null);
