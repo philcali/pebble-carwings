@@ -6,7 +6,7 @@ var Settings = require('settings')
       for (var key in options) {
         Settings[func](key, null);
       }
-      return options
+      return options;
     }
   , flow = new Flow(Settings.option(), Settings.data());
 
