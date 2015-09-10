@@ -16,6 +16,7 @@ Settings.config(
     // Init certain options
     if (!e.options || (e.options && !e.options.range)) {
       Settings.option('range', 'mi');
+      Settings.option('region', 'us');
     }
   },
   function(e) {
