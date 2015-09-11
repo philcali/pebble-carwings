@@ -7,4 +7,6 @@ ln -s $PWD/lib/carwings.js $PWD/pebblejs/src/js/lib/carwings.js
 ln -s $PWD/lib/display.js $PWD/pebblejs/src/js/lib/display.js
 ln -s $PWD/lib/flow.js $PWD/pebblejs/src/js/lib/flow.js
 ln -s $PWD/lib/menu.js $PWD/pebblejs/src/js/lib/menu.js
+ln -s $PWD/lib/request.js $PWD/pebblejs/src/js/lib/request.js
+ln -s $PWD/lib/ocm.js $PWD/pebblejs/src/js/lib/ocm.js
 ln -s $PWD/images $PWD/pebblejs/resources/images
