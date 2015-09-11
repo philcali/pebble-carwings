@@ -6,7 +6,8 @@
   "versionCode": 1,
   "versionLabel": "0.1",
   "capabilities": [
-    "configurable"
+    "configurable",
+    "location"
   ],
   "watchapp": {
     "watchface": false
@@ -15,10 +16,34 @@
   "resources": {
     "media": [
       {
-        "menuIcon": true,
         "type": "png",
-        "name": "IMAGE_MENU_ICON",
-        "file": "images/menu_icon.png"
+        "name": "IMAGE_MENU_ABOUT",
+        "file": "images/about.png"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_MENU_INFO",
+        "file": "images/info.png"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_MENU_AC_OFF",
+        "file": "images/fan.png"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_MENU_AC_ON",
+        "file": "images/moving_fan.png"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_MENU_REFRESH",
+        "file": "images/refresh.png"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_MENU_LOCATION",
+        "file": "images/location.png"
       },
       {
         "type": "png",
