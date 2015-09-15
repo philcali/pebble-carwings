@@ -21,9 +21,11 @@ Settings.config(
   },
   function(e) {
     // Always clear the vehicle info
-    var sessionId = Settings.data('sessionId');
-    if (sessionId) {
-      flow.carwings.remove();
+    if (e.options !== 'CANCELLED') {
+      var sessionId = Settings.data('sessionId');
+      if (sessionId) {
+        flow.carwings.remove();
+      }
     }
   });
 
