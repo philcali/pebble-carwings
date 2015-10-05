@@ -22,7 +22,7 @@ Settings.config(
   },
   function(e) {
     // Always clear the vehicle info
-    if (e.options !== 'CANCELLED') {
+    if (e.originalEvent.data !== 'CANCELLED') {
       var sessionId = Settings.data('sessionId');
       if (sessionId) {
         flow.carwings.remove();
