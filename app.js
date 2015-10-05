@@ -1,6 +1,7 @@
 var Settings = require('settings')
   , Flow = require('flow')
   , Wakeup = require('wakeup')
+  , accountId = Pebble.getAccountToken()
   , wipe = function(func) {
       var options = Settings[func]();
       for (var key in options) {
@@ -8,10 +9,10 @@ var Settings = require('settings')
       }
       return options;
     }
-  , flow = new Flow(Settings.option(), Settings.data());
+  , flow = new Flow(accountId, Settings.option(), Settings.data());
 
 Settings.config(
-  'https://proxywings.com/',
+  'https://proxywings.com/?accountId=' + accountId,
   function(e) {
     // Init certain options
     if (!e.options || (e.options && !e.options.range)) {
